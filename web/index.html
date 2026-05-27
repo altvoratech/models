@@ -4,79 +4,269 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Kilo Gateway - Modelos</title>
+    <meta name="description" content="Pesquise e filtre modelos disponíveis no Kilo Gateway. Busca completa por texto, modelo e marca/provedor." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <style>
+      /* ── Design Tokens ── */
       :root {
-        color-scheme: light dark;
-        --bg: #0b1020;
-        --panel: rgba(255, 255, 255, 0.06);
-        --border: rgba(255, 255, 255, 0.14);
-        --text: rgba(255, 255, 255, 0.92);
-        --muted: rgba(255, 255, 255, 0.66);
-        --accent: #6ea8fe;
-        --accent2: #74c0fc;
+        color-scheme: dark;
+        --bg-primary: #06080f;
+        --bg-secondary: #0c1021;
+        --surface: rgba(255, 255, 255, 0.04);
+        --surface-hover: rgba(255, 255, 255, 0.07);
+        --glass: rgba(12, 16, 33, 0.72);
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --glass-border-hover: rgba(255, 255, 255, 0.14);
+        --text-primary: rgba(255, 255, 255, 0.95);
+        --text-secondary: rgba(255, 255, 255, 0.6);
+        --text-tertiary: rgba(255, 255, 255, 0.38);
+        --accent: #818cf8;
+        --accent-soft: rgba(129, 140, 248, 0.15);
+        --accent-border: rgba(129, 140, 248, 0.3);
+        --accent-glow: rgba(129, 140, 248, 0.25);
+        --teal: #2dd4bf;
+        --teal-soft: rgba(45, 212, 191, 0.12);
+        --danger: #f87171;
+        --danger-soft: rgba(248, 113, 113, 0.1);
+        --danger-border: rgba(248, 113, 113, 0.25);
+        --success: #34d399;
+        --radius-sm: 8px;
+        --radius-md: 12px;
+        --radius-lg: 16px;
+        --radius-xl: 20px;
+        --radius-pill: 999px;
+        --shadow-sm: 0 2px 8px rgba(0,0,0,0.2);
+        --shadow-md: 0 8px 32px rgba(0,0,0,0.3);
+        --shadow-lg: 0 16px 48px rgba(0,0,0,0.4);
+        --shadow-glow: 0 0 40px var(--accent-glow);
+        --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       }
+
       @media (prefers-color-scheme: light) {
         :root {
-          --bg: #f6f7fb;
-          --panel: rgba(0, 0, 0, 0.04);
-          --border: rgba(0, 0, 0, 0.10);
-          --text: rgba(0, 0, 0, 0.88);
-          --muted: rgba(0, 0, 0, 0.62);
-          --accent: #2b6cb0;
-          --accent2: #2c7a7b;
+          color-scheme: light;
+          --bg-primary: #f0f2f8;
+          --bg-secondary: #e8ebf4;
+          --surface: rgba(255, 255, 255, 0.8);
+          --surface-hover: rgba(255, 255, 255, 0.95);
+          --glass: rgba(255, 255, 255, 0.72);
+          --glass-border: rgba(0, 0, 0, 0.08);
+          --glass-border-hover: rgba(0, 0, 0, 0.14);
+          --text-primary: rgba(0, 0, 0, 0.9);
+          --text-secondary: rgba(0, 0, 0, 0.55);
+          --text-tertiary: rgba(0, 0, 0, 0.3);
+          --accent: #6366f1;
+          --accent-soft: rgba(99, 102, 241, 0.1);
+          --accent-border: rgba(99, 102, 241, 0.25);
+          --accent-glow: rgba(99, 102, 241, 0.12);
+          --teal: #0d9488;
+          --teal-soft: rgba(13, 148, 136, 0.08);
+          --danger: #ef4444;
+          --danger-soft: rgba(239, 68, 68, 0.06);
+          --danger-border: rgba(239, 68, 68, 0.2);
+          --success: #10b981;
+          --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+          --shadow-md: 0 8px 32px rgba(0,0,0,0.08);
+          --shadow-lg: 0 16px 48px rgba(0,0,0,0.1);
+          --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.08);
         }
       }
+
+      /* ── Reset & Base ── */
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
       body {
-        margin: 0;
-        font: 14px/1.35 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
-          Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-        background: radial-gradient(900px 500px at 20% 0%, rgba(110, 168, 254, 0.22), transparent 60%),
-          radial-gradient(800px 500px at 90% 10%, rgba(116, 192, 252, 0.18), transparent 60%),
-          var(--bg);
-        color: var(--text);
+        font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+        font-size: 14px;
+        line-height: 1.5;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        min-height: 100vh;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
+
+      /* ── Animated Background ── */
+      .bg-effects {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+      }
+      .bg-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.5;
+        animation: orbFloat 20s ease-in-out infinite;
+      }
+      .bg-orb--1 {
+        width: 600px; height: 600px;
+        background: radial-gradient(circle, rgba(129,140,248,0.25) 0%, transparent 70%);
+        top: -10%; left: -5%;
+        animation-delay: 0s;
+      }
+      .bg-orb--2 {
+        width: 500px; height: 500px;
+        background: radial-gradient(circle, rgba(45,212,191,0.18) 0%, transparent 70%);
+        top: 20%; right: -8%;
+        animation-delay: -7s;
+        animation-duration: 25s;
+      }
+      .bg-orb--3 {
+        width: 400px; height: 400px;
+        background: radial-gradient(circle, rgba(129,140,248,0.12) 0%, transparent 70%);
+        bottom: -5%; left: 30%;
+        animation-delay: -14s;
+        animation-duration: 22s;
+      }
+      @keyframes orbFloat {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        25% { transform: translate(30px, -40px) scale(1.05); }
+        50% { transform: translate(-20px, 20px) scale(0.95); }
+        75% { transform: translate(10px, 30px) scale(1.02); }
+      }
+
+      /* ── Noise texture overlay ── */
+      .bg-effects::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+        opacity: 0.5;
+      }
+
+      /* ── Layout ── */
       .wrap {
-        max-width: 1080px;
+        position: relative;
+        z-index: 1;
+        max-width: 1140px;
         margin: 0 auto;
-        padding: 28px 16px 40px;
+        padding: 32px 20px 60px;
       }
+
+      /* ── Header ── */
       header {
         display: flex;
-        align-items: flex-end;
+        align-items: center;
         justify-content: space-between;
-        gap: 12px;
-        margin-bottom: 18px;
+        gap: 16px;
+        margin-bottom: 28px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--glass-border);
+      }
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .logo-mark {
+        width: 42px;
+        height: 42px;
+        border-radius: var(--radius-md);
+        background: linear-gradient(135deg, var(--accent), var(--teal));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        box-shadow: 0 4px 16px var(--accent-glow);
+        animation: logoPulse 4s ease-in-out infinite;
+      }
+      @keyframes logoPulse {
+        0%, 100% { box-shadow: 0 4px 16px var(--accent-glow); }
+        50% { box-shadow: 0 4px 28px var(--accent-glow), 0 0 48px rgba(45,212,191,0.12); }
+      }
+      .logo-mark svg {
+        width: 22px;
+        height: 22px;
+        fill: white;
       }
       h1 {
-        font-size: 18px;
-        margin: 0;
-        letter-spacing: 0.2px;
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: -0.3px;
+        background: linear-gradient(135deg, var(--text-primary), var(--accent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
       .sub {
-        margin: 6px 0 0;
-        color: var(--muted);
-        font-size: 12px;
+        margin: 2px 0 0;
+        color: var(--text-secondary);
+        font-size: 13px;
+        font-weight: 400;
       }
+
+      /* ── Status Pill ── */
       .pill {
-        border: 1px solid var(--border);
-        background: var(--panel);
-        padding: 8px 10px;
-        border-radius: 999px;
-        color: var(--muted);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid var(--glass-border);
+        background: var(--glass);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        padding: 7px 14px;
+        border-radius: var(--radius-pill);
+        color: var(--text-secondary);
         font-size: 12px;
+        font-weight: 500;
         white-space: nowrap;
+        transition: var(--transition);
       }
+      .pill::before {
+        content: '';
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--text-tertiary);
+        transition: var(--transition);
+        flex-shrink: 0;
+      }
+      .pill[data-status="loading"]::before {
+        background: var(--accent);
+        animation: dotPulse 1.5s ease-in-out infinite;
+      }
+      .pill[data-status="ok"]::before {
+        background: var(--success);
+        box-shadow: 0 0 8px rgba(52, 211, 153, 0.5);
+      }
+      .pill[data-status="error"]::before {
+        background: var(--danger);
+        box-shadow: 0 0 8px rgba(248, 113, 113, 0.5);
+      }
+      @keyframes dotPulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.4; transform: scale(0.75); }
+      }
+
+      /* ── Glass Panel ── */
       .panel {
-        border: 1px solid var(--border);
-        background: var(--panel);
-        border-radius: 14px;
-        padding: 14px;
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        border: 1px solid var(--glass-border);
+        background: var(--glass);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: var(--radius-xl);
+        padding: 24px;
+        box-shadow: var(--shadow-lg), var(--shadow-glow);
+        transition: var(--transition-slow);
+        animation: panelEntry 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
       }
+      @keyframes panelEntry {
+        from { opacity: 0; transform: translateY(16px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* ── Controls ── */
       .controls {
         display: grid;
-        grid-template-columns: 1.2fr 0.8fr 0.8fr auto;
-        gap: 10px;
+        grid-template-columns: 1.5fr 1fr 1fr auto;
+        gap: 14px;
         align-items: end;
       }
       @media (max-width: 900px) {
@@ -84,147 +274,606 @@
           grid-template-columns: 1fr 1fr;
         }
       }
-      label {
-        display: block;
-        font-size: 12px;
-        color: var(--muted);
-        margin: 0 0 6px;
+      @media (max-width: 520px) {
+        .controls {
+          grid-template-columns: 1fr;
+        }
+        header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
       }
+
+      .field-group label {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        margin: 0 0 8px 2px;
+      }
+
+      .input-wrap {
+        position: relative;
+      }
+      .input-wrap .input-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 16px;
+        height: 16px;
+        color: var(--text-tertiary);
+        pointer-events: none;
+        transition: var(--transition);
+      }
+      .input-wrap:focus-within .input-icon {
+        color: var(--accent);
+      }
+
       input[type="text"],
       select {
         width: 100%;
-        padding: 10px 10px;
-        border-radius: 10px;
-        border: 1px solid var(--border);
-        background: rgba(0, 0, 0, 0.06);
-        color: var(--text);
+        padding: 11px 12px 11px 38px;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--glass-border);
+        background: var(--surface);
+        color: var(--text-primary);
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 500;
         outline: none;
+        transition: var(--transition);
+        appearance: none;
+        -webkit-appearance: none;
+      }
+      select {
+        padding-left: 12px;
+        padding-right: 32px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.4)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        cursor: pointer;
+      }
+
+      input[type="text"]:hover,
+      select:hover {
+        border-color: var(--glass-border-hover);
+        background: var(--surface-hover);
       }
       input[type="text"]:focus,
       select:focus {
-        border-color: rgba(110, 168, 254, 0.55);
-        box-shadow: 0 0 0 3px rgba(110, 168, 254, 0.18);
+        border-color: var(--accent-border);
+        box-shadow: 0 0 0 3px var(--accent-soft), var(--shadow-sm);
+        background: var(--surface-hover);
       }
+      input::placeholder {
+        color: var(--text-tertiary);
+        font-weight: 400;
+      }
+
+      /* ── Button ── */
       .btn {
-        padding: 10px 12px;
-        border-radius: 10px;
-        border: 1px solid rgba(110, 168, 254, 0.45);
-        background: linear-gradient(180deg, rgba(110, 168, 254, 0.22), rgba(110, 168, 254, 0.10));
-        color: var(--text);
-        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 11px 22px;
+        border-radius: var(--radius-md);
+        border: none;
+        background: linear-gradient(135deg, var(--accent), #a78bfa);
+        color: #fff;
+        font-family: inherit;
+        font-size: 13px;
         font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .btn::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.15) 50%, transparent 60%);
+        transform: translateX(-100%);
+        transition: transform 0.5s ease;
+      }
+      .btn:hover::before {
+        transform: translateX(100%);
+      }
+      .btn:hover {
+        box-shadow: 0 4px 20px var(--accent-glow), 0 2px 8px rgba(0,0,0,0.2);
+        transform: translateY(-1px);
+      }
+      .btn:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px var(--accent-glow);
       }
       .btn:disabled {
-        opacity: 0.65;
+        opacity: 0.5;
         cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
       }
+      .btn:disabled::before { display: none; }
+
+      .btn svg {
+        width: 15px;
+        height: 15px;
+        flex-shrink: 0;
+      }
+
+      /* ── Divider ── */
+      .divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+        margin: 18px 0;
+      }
+
+      /* ── Meta bar ── */
       .meta {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         gap: 10px;
-        margin-top: 10px;
-        color: var(--muted);
+        color: var(--text-secondary);
         font-size: 12px;
+        flex-wrap: wrap;
       }
+      .meta-left {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .result-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        padding: 3px 10px;
+        border-radius: var(--radius-pill);
+        font-weight: 600;
+        font-size: 12px;
+        font-variant-numeric: tabular-nums;
+        transition: var(--transition);
+      }
+      .meta-hint {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        color: var(--text-tertiary);
+        font-size: 11px;
+      }
+      .meta-hint code {
+        background: var(--surface);
+        padding: 2px 6px;
+        border-radius: var(--radius-sm);
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 11px;
+        color: var(--teal);
+        border: 1px solid var(--glass-border);
+      }
+
+      /* ── Error ── */
       .error {
-        margin-top: 10px;
-        padding: 10px;
-        border-radius: 10px;
-        border: 1px solid rgba(255, 0, 0, 0.25);
-        background: rgba(255, 0, 0, 0.08);
-        color: var(--text);
+        margin-top: 14px;
+        padding: 12px 16px;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--danger-border);
+        background: var(--danger-soft);
+        color: var(--text-primary);
+        font-size: 13px;
         display: none;
+        animation: shakeIn 0.4s ease;
       }
+      @keyframes shakeIn {
+        0% { transform: translateX(-8px); opacity: 0; }
+        25% { transform: translateX(6px); }
+        50% { transform: translateX(-4px); }
+        75% { transform: translateX(2px); }
+        100% { transform: translateX(0); opacity: 1; }
+      }
+
+      /* ── Table Container ── */
+      .table-container {
+        margin-top: 18px;
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--glass-border);
+        overflow: hidden;
+        background: var(--surface);
+      }
+
       table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 14px;
-        overflow: hidden;
-        border-radius: 12px;
+      }
+      thead {
+        background: rgba(129, 140, 248, 0.05);
       }
       th, td {
         text-align: left;
-        padding: 10px 10px;
-        border-bottom: 1px solid var(--border);
+        padding: 12px 14px;
         vertical-align: top;
       }
       th {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        border-bottom: 1px solid var(--glass-border);
+        position: sticky;
+        top: 0;
+        background: inherit;
+      }
+      td {
+        border-bottom: 1px solid rgba(255,255,255,0.04);
+        font-size: 13px;
+        transition: var(--transition);
+      }
+      tbody tr {
+        transition: var(--transition);
+      }
+      tbody tr:hover {
+        background: var(--accent-soft);
+      }
+      tbody tr:hover td {
+        border-bottom-color: transparent;
+      }
+      tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      code {
+        font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
         font-size: 12px;
-        color: var(--muted);
+        color: var(--text-primary);
+      }
+      td code {
+        background: var(--surface);
+        padding: 2px 7px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--glass-border);
+        color: var(--accent);
+        font-size: 11px;
+        word-break: break-all;
+      }
+      .raw-cell {
+        position: relative;
+        padding-right: 8px !important;
+      }
+      .raw-cell code {
+        color: var(--text-tertiary);
+        background: transparent;
+        border: none;
+        padding: 0;
+        font-size: 10px;
+      }
+
+      /* ── JSON Viewer ── */
+      .json-viewer {
+        position: relative;
+        max-height: 180px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        background: var(--bg-secondary);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius-md);
+        padding: 10px 12px;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 11px;
+        line-height: 1.65;
+        scrollbar-width: thin;
+      }
+      .json-viewer.expanded {
+        max-height: 420px;
+      }
+      .json-actions {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 6px;
+      }
+      .json-action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 8px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--glass-border);
+        background: var(--surface);
+        color: var(--text-tertiary);
+        font-family: inherit;
+        font-size: 10px;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+      .json-action-btn:hover {
+        background: var(--surface-hover);
+        color: var(--text-secondary);
+        border-color: var(--glass-border-hover);
+      }
+      .json-action-btn svg {
+        width: 11px;
+        height: 11px;
+        flex-shrink: 0;
+      }
+
+      /* JSON tree structure */
+      .json-tree {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .json-tree .json-tree {
+        padding-left: 16px;
+        border-left: 1px solid rgba(255,255,255,0.06);
+        margin-left: 4px;
+      }
+      .json-item {
+        position: relative;
+      }
+      .json-key {
+        color: var(--accent);
+        font-weight: 500;
+      }
+      .json-colon {
+        color: var(--text-tertiary);
+        margin: 0 4px 0 1px;
+      }
+      .json-string {
+        color: var(--teal);
+      }
+      .json-number {
+        color: #c084fc;
+      }
+      .json-boolean {
+        color: #fbbf24;
         font-weight: 600;
       }
-      tr:hover td {
-        background: rgba(110, 168, 254, 0.06);
+      .json-null {
+        color: var(--text-tertiary);
+        font-style: italic;
       }
-      code {
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-        font-size: 12px;
-        color: var(--text);
+      .json-bracket {
+        color: var(--text-tertiary);
       }
-      .small {
-        color: var(--muted);
-        font-size: 12px;
+      .json-comma {
+        color: var(--text-tertiary);
+      }
+      .json-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 14px;
+        height: 14px;
+        border: none;
+        background: transparent;
+        color: var(--text-tertiary);
+        cursor: pointer;
+        font-size: 9px;
+        padding: 0;
+        margin-right: 2px;
+        border-radius: 3px;
+        transition: var(--transition);
+        vertical-align: middle;
+      }
+      .json-toggle:hover {
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+      .json-toggle[aria-expanded="false"] + .json-collapsible {
+        display: none;
+      }
+      .json-toggle[aria-expanded="false"] ~ .json-collapsed-preview {
+        display: inline;
+      }
+      .json-collapsed-preview {
+        display: none;
+        color: var(--text-tertiary);
+        font-size: 10px;
+        font-style: italic;
+      }
+      .json-string-long {
+        color: var(--teal);
+        max-width: 260px;
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: bottom;
+        cursor: help;
+      }
+
+      /* ── Empty state ── */
+      .empty-state {
+        text-align: center;
+        padding: 48px 20px;
+        color: var(--text-tertiary);
+      }
+      .empty-state svg {
+        width: 48px;
+        height: 48px;
+        color: var(--text-tertiary);
+        margin-bottom: 12px;
+        opacity: 0.5;
+      }
+      .empty-state p {
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      /* ── Skeleton loading ── */
+      .skeleton {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 8px 0;
+      }
+      .skeleton-row {
+        display: grid;
+        grid-template-columns: 26% 22% 20% 18% 1fr;
+        gap: 10px;
+        padding: 12px 14px;
+      }
+      .skeleton-cell {
+        height: 14px;
+        background: linear-gradient(90deg, var(--surface) 25%, var(--surface-hover) 50%, var(--surface) 75%);
+        background-size: 200% 100%;
+        border-radius: var(--radius-sm);
+        animation: shimmer 1.8s ease-in-out infinite;
+      }
+      .skeleton-cell:nth-child(2) { width: 85%; }
+      .skeleton-cell:nth-child(3) { width: 70%; }
+      .skeleton-cell:nth-child(4) { width: 60%; }
+      .skeleton-cell:nth-child(5) { width: 90%; }
+      @keyframes shimmer {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+
+      /* ── Footer ── */
+      footer {
+        margin-top: 32px;
+        text-align: center;
+        color: var(--text-tertiary);
+        font-size: 11px;
+        padding: 16px 0;
+        border-top: 1px solid var(--glass-border);
+      }
+      footer span {
+        color: var(--accent);
+      }
+
+      /* ── Scrollbar ── */
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: var(--glass-border-hover); }
+
+      /* ── Responsive table scroll ── */
+      @media (max-width: 768px) {
+        .table-container { overflow-x: auto; }
+        table { min-width: 640px; }
       }
     </style>
   </head>
   <body>
+    <!-- Animated background orbs -->
+    <div class="bg-effects" aria-hidden="true">
+      <div class="bg-orb bg-orb--1"></div>
+      <div class="bg-orb bg-orb--2"></div>
+      <div class="bg-orb bg-orb--3"></div>
+    </div>
+
     <div class="wrap">
       <header>
-        <div>
-          <h1>Kilo Gateway — Pesquisa de Modelos</h1>
-          <p class="sub">Busca completa (texto) + filtros por modelo e marca/provedor</p>
-        </div>
-        <div class="pill" id="statusPill">Carregando…</div>
-      </header>
-
-      <div class="panel">
-        <div class="controls">
-          <div>
-            <label for="q">Pesquisa (nome, id, qualquer campo)</label>
-            <input id="q" type="text" placeholder="Ex.: gpt, llama, vision, 32k…" />
+        <div class="header-left">
+          <!-- Logo mark -->
+          <div class="logo-mark">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
           </div>
           <div>
+            <h1>Kilo Gateway</h1>
+            <p class="sub">Pesquisa de modelos · Busca completa + filtros por modelo e marca</p>
+          </div>
+        </div>
+        <div class="pill" id="statusPill" data-status="loading">Carregando…</div>
+      </header>
+
+      <div class="panel" id="mainPanel">
+        <div class="controls">
+          <!-- Search input -->
+          <div class="field-group">
+            <label for="q">Pesquisa</label>
+            <div class="input-wrap">
+              <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+              </svg>
+              <input id="q" type="text" placeholder="Ex.: gpt, llama, vision, 32k…" />
+            </div>
+          </div>
+
+          <!-- Model select -->
+          <div class="field-group">
             <label for="modelSel">Modelo</label>
             <select id="modelSel">
               <option value="">Todos</option>
             </select>
           </div>
-          <div>
-            <label for="brandSel">Marca/Provedor</label>
+
+          <!-- Brand select -->
+          <div class="field-group">
+            <label for="brandSel">Marca / Provedor</label>
             <select id="brandSel">
               <option value="">Todos</option>
             </select>
           </div>
-          <div>
-            <button class="btn" id="searchBtn">Pesquisar</button>
+
+          <!-- Search button -->
+          <div class="field-group">
+            <label>&nbsp;</label>
+            <button class="btn" id="searchBtn">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+              </svg>
+              Pesquisar
+            </button>
           </div>
         </div>
 
+        <div class="divider"></div>
+
         <div class="meta">
-          <div>
-            <span id="resultCount">0</span> resultado(s)
-            <span class="small">· limite: <span id="limitVal">200</span></span>
+          <div class="meta-left">
+            <span class="result-badge">
+              <span id="resultCount">0</span> resultado(s)
+            </span>
+            <span class="meta-hint">limite: <code id="limitVal">200</code></span>
           </div>
-          <div class="small">
-            Dica: defina <code>KILO_API_KEY</code> no servidor se o endpoint exigir autenticação.
+          <div class="meta-hint">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            Defina <code>KILO_API_KEY</code> se o endpoint exigir autenticação
           </div>
         </div>
 
         <div class="error" id="errorBox"></div>
 
-        <table>
-          <thead>
-            <tr>
-              <th style="width: 26%">Nome</th>
-              <th style="width: 22%">ID</th>
-              <th style="width: 20%">Modelo</th>
-              <th style="width: 18%">Marca</th>
-              <th>Raw</th>
-            </tr>
-          </thead>
-          <tbody id="tbody"></tbody>
-        </table>
+        <div class="table-container" id="tableContainer">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 26%">Nome</th>
+                <th style="width: 22%">ID</th>
+                <th style="width: 20%">Modelo</th>
+                <th style="width: 18%">Marca</th>
+                <th>Raw</th>
+              </tr>
+            </thead>
+            <tbody id="tbody">
+              <!-- Skeleton loader -->
+              <tr><td colspan="5">
+                <div class="skeleton" id="skeletonLoader">
+                  <div class="skeleton-row"><div class="skeleton-cell"></div><div class="skeleton-cell"></div><div class="skeleton-cell"></div><div class="skeleton-cell"></div><div class="skeleton-cell"></div></div>
+                  <div class="skeleton-row"><div class="skeleton-cell"></div><div class="skeleton-cell"></div><div class="skeleton-cell"></div><div class="skeleton-cell"></div><div class="skeleton-cell"></div></div>
+                  <div class="skeleton-row"><div class="skeleton-cell"></div><div class="skeleton-cell"></div><div class="skeleton-cell"></div><div class="skeleton-cell"></div><div class="skeleton-cell"></div></div>
+                  <div class="skeleton-row"><div class="skeleton-cell"></div><div class="skeleton-cell"></div><div class="skeleton-cell"></div><div class="skeleton-cell"></div><div class="skeleton-cell"></div></div>
+                  <div class="skeleton-row"><div class="skeleton-cell"></div><div class="skeleton-cell"></div><div class="skeleton-cell"></div><div class="skeleton-cell"></div><div class="skeleton-cell"></div></div>
+                </div>
+              </td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
+
+      <footer>
+        Kilo Gateway &middot; <span>Pesquisa de Modelos</span> &middot; 2026
+      </footer>
     </div>
 
     <script>
@@ -239,6 +888,11 @@
 
       const LIMIT = 200;
       document.getElementById("limitVal").textContent = String(LIMIT);
+
+      function setStatus(text, status = "loading") {
+        statusPill.textContent = text;
+        statusPill.setAttribute("data-status", status);
+      }
 
       function setError(msg) {
         if (!msg) {
@@ -274,35 +928,64 @@
       }
 
       function renderRows(items) {
-        const rows = items.map(it => {
-          const raw = JSON.stringify(it.raw ?? it, null, 0);
+        if (items.length === 0) {
+          tbody.innerHTML = `
+            <tr><td colspan="5">
+              <div class="empty-state">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M8 11h6"/>
+                </svg>
+                <p>Nenhum modelo encontrado</p>
+              </div>
+            </td></tr>
+          `;
+          return;
+        }
+        const rows = items.map((it, i) => {
+          const rawObj = it.raw ?? it;
+          const jsonHtml = renderJsonTree(rawObj, 0, true);
+          const rawId = `raw-${i}`;
           return `
-            <tr>
+            <tr style="animation: rowFadeIn 0.3s ease ${Math.min(i * 0.03, 0.5)}s both">
               <td>${escapeHtml(it.name)}</td>
               <td><code>${escapeHtml(it.id)}</code></td>
               <td>${escapeHtml(it.model)}</td>
               <td>${escapeHtml(it.brand)}</td>
-              <td class="small"><code>${escapeHtml(raw)}</code></td>
+              <td class="raw-cell">
+                <div class="json-actions">
+                  <button class="json-action-btn" onclick="toggleExpand(this)" title="Expandir/Colapsar">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/></svg>
+                    Expandir
+                  </button>
+                  <button class="json-action-btn" onclick="copyRaw(this, ${i})" title="Copiar JSON">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                    Copiar
+                  </button>
+                </div>
+                <div class="json-viewer" id="${rawId}"><ul class="json-tree">${jsonHtml}</ul></div>
+              </td>
             </tr>
           `;
         });
         tbody.innerHTML = rows.join("");
+        // Store raw data for copy
+        window.__rawItems = items.map(it => it.raw ?? it);
       }
 
       async function loadFilters() {
-        statusPill.textContent = "Carregando filtros…";
+        setStatus("Carregando filtros…", "loading");
         setError(null);
         const resp = await fetch("/api/models");
         const data = await resp.json();
         if (!resp.ok) throw new Error(data?.error ?? `Falha ao carregar /api/models (${resp.status})`);
         fillSelect(modelSel, data.models ?? []);
         fillSelect(brandSel, data.brands ?? []);
-        statusPill.textContent = `OK · ${data.count ?? 0} itens`;
+        setStatus(`${data.count ?? 0} modelos`, "ok");
       }
 
       async function search() {
         searchBtn.disabled = true;
-        statusPill.textContent = "Pesquisando…";
+        setStatus("Pesquisando…", "loading");
         setError(null);
         const params = new URLSearchParams();
         const q = qInput.value.trim();
@@ -317,9 +1000,10 @@
         const data = await resp.json();
         if (!resp.ok) throw new Error(data?.error ?? `Falha ao buscar (${resp.status})`);
 
-        resultCount.textContent = String(data.count ?? 0);
+        const count = data.count ?? 0;
+        resultCount.textContent = String(count);
         renderRows(data.items ?? []);
-        statusPill.textContent = "Pronto";
+        setStatus("Pronto", "ok");
         searchBtn.disabled = false;
       }
 
@@ -338,12 +1022,111 @@
       modelSel.addEventListener("change", () => search().catch(e => setError(String(e))));
       brandSel.addEventListener("change", () => search().catch(e => setError(String(e))));
 
+      // ── JSON Tree Renderer ──
+      function renderJsonTree(obj, depth = 0, isRoot = false) {
+        if (obj === null) return `<li class="json-item"><span class="json-null">null</span></li>`;
+        if (obj === undefined) return `<li class="json-item"><span class="json-null">undefined</span></li>`;
+
+        const type = typeof obj;
+
+        if (type === 'string') {
+          const escaped = escapeHtml(obj);
+          if (obj.length > 80) {
+            return `<span class="json-string-long" title="${escaped}">&quot;${escaped}&quot;</span>`;
+          }
+          return `<span class="json-string">&quot;${escaped}&quot;</span>`;
+        }
+        if (type === 'number') return `<span class="json-number">${obj}</span>`;
+        if (type === 'boolean') return `<span class="json-boolean">${obj}</span>`;
+
+        const isArray = Array.isArray(obj);
+        const entries = isArray ? obj.map((v, i) => [i, v]) : Object.entries(obj);
+        const openBracket = isArray ? '[' : '{';
+        const closeBracket = isArray ? ']' : '}';
+        const count = entries.length;
+
+        if (count === 0) {
+          return `<span class="json-bracket">${openBracket}${closeBracket}</span>`;
+        }
+
+        const collapsed = depth >= 1;
+        const ariaExp = collapsed ? 'false' : 'true';
+        const preview = isArray ? `${count} items` : `${count} keys`;
+
+        let html = '';
+        entries.forEach(([key, val], idx) => {
+          const comma = idx < count - 1 ? '<span class="json-comma">,</span>' : '';
+          const keyHtml = isArray ? '' : `<span class="json-key">&quot;${escapeHtml(String(key))}&quot;</span><span class="json-colon">:</span> `;
+
+          if (val !== null && typeof val === 'object') {
+            const subIsArray = Array.isArray(val);
+            const subOpen = subIsArray ? '[' : '{';
+            const subClose = subIsArray ? ']' : '}';
+            const subEntries = subIsArray ? val.length : Object.keys(val).length;
+            const subPreview = subIsArray ? `${subEntries} items` : `${subEntries} keys`;
+            const subCollapsed = depth >= 0;
+            const subAria = subCollapsed ? 'false' : 'true';
+
+            if (subEntries === 0) {
+              html += `<li class="json-item">${keyHtml}<span class="json-bracket">${subOpen}${subClose}</span>${comma}</li>`;
+            } else {
+              const innerHtml = renderJsonTree(val, depth + 1);
+              html += `<li class="json-item">
+                ${keyHtml}<button class="json-toggle" aria-expanded="${subAria}" onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded')==='true'?'false':'true')">${subAria === 'true' ? '▼' : '▶'}</button><span class="json-bracket">${subOpen}</span>
+                <span class="json-collapsed-preview"> ${subPreview} …</span>
+                <ul class="json-tree json-collapsible">${innerHtml}</ul>
+                <span class="json-bracket">${subClose}</span>${comma}
+              </li>`;
+            }
+          } else {
+            const valHtml = renderJsonTree(val, depth + 1);
+            html += `<li class="json-item">${keyHtml}${valHtml}${comma}</li>`;
+          }
+        });
+
+        if (isRoot) return html;
+        return html;
+      }
+
+      function toggleExpand(btn) {
+        const viewer = btn.closest('.raw-cell').querySelector('.json-viewer');
+        viewer.classList.toggle('expanded');
+        const isExpanded = viewer.classList.contains('expanded');
+        btn.querySelector('svg').innerHTML = isExpanded
+          ? '<path d="M4 14h6v6"/><path d="M20 10h-6V4"/><path d="m14 10 7-7"/><path d="m3 21 7-7"/>'
+          : '<path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/>';
+        btn.childNodes[btn.childNodes.length - 1].textContent = isExpanded ? ' Colapsar' : ' Expandir';
+      }
+
+      function copyRaw(btn, index) {
+        const raw = window.__rawItems?.[index];
+        if (!raw) return;
+        const text = JSON.stringify(raw, null, 2);
+        navigator.clipboard.writeText(text).then(() => {
+          const original = btn.innerHTML;
+          btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Copiado!`;
+          btn.style.color = 'var(--success)';
+          btn.style.borderColor = 'var(--success)';
+          setTimeout(() => { btn.innerHTML = original; btn.style.color = ''; btn.style.borderColor = ''; }, 1500);
+        });
+      }
+
+      // Inject the row fade-in animation
+      const styleSheet = document.createElement("style");
+      styleSheet.textContent = `
+        @keyframes rowFadeIn {
+          from { opacity: 0; transform: translateY(6px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `;
+      document.head.appendChild(styleSheet);
+
       (async () => {
         try {
           await loadFilters();
           await search();
         } catch (e) {
-          statusPill.textContent = "Erro";
+          setStatus("Erro", "error");
           setError(String(e));
         } finally {
           searchBtn.disabled = false;
@@ -352,4 +1135,3 @@
     </script>
   </body>
 </html>
-
