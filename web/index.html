@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kilo Gateway - Modelos</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #0b1020;
+        --panel: rgba(255, 255, 255, 0.06);
+        --border: rgba(255, 255, 255, 0.14);
+        --text: rgba(255, 255, 255, 0.92);
+        --muted: rgba(255, 255, 255, 0.66);
+        --accent: #6ea8fe;
+        --accent2: #74c0fc;
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f6f7fb;
+          --panel: rgba(0, 0, 0, 0.04);
+          --border: rgba(0, 0, 0, 0.10);
+          --text: rgba(0, 0, 0, 0.88);
+          --muted: rgba(0, 0, 0, 0.62);
+          --accent: #2b6cb0;
+          --accent2: #2c7a7b;
+        }
+      }
+      body {
+        margin: 0;
+        font: 14px/1.35 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+          Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+        background: radial-gradient(900px 500px at 20% 0%, rgba(110, 168, 254, 0.22), transparent 60%),
+          radial-gradient(800px 500px at 90% 10%, rgba(116, 192, 252, 0.18), transparent 60%),
+          var(--bg);
+        color: var(--text);
+      }
+      .wrap {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 28px 16px 40px;
+      }
+      header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+      h1 {
+        font-size: 18px;
+        margin: 0;
+        letter-spacing: 0.2px;
+      }
+      .sub {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .pill {
+        border: 1px solid var(--border);
+        background: var(--panel);
+        padding: 8px 10px;
+        border-radius: 999px;
+        color: var(--muted);
+        font-size: 12px;
+        white-space: nowrap;
+      }
+      .panel {
+        border: 1px solid var(--border);
+        background: var(--panel);
+        border-radius: 14px;
+        padding: 14px;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+      }
+      .controls {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr 0.8fr auto;
+        gap: 10px;
+        align-items: end;
+      }
+      @media (max-width: 900px) {
+        .controls {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      label {
+        display: block;
+        font-size: 12px;
+        color: var(--muted);
+        margin: 0 0 6px;
+      }
+      input[type="text"],
+      select {
+        width: 100%;
+        padding: 10px 10px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: rgba(0, 0, 0, 0.06);
+        color: var(--text);
+        outline: none;
+      }
+      input[type="text"]:focus,
+      select:focus {
+        border-color: rgba(110, 168, 254, 0.55);
+        box-shadow: 0 0 0 3px rgba(110, 168, 254, 0.18);
+      }
+      .btn {
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(110, 168, 254, 0.45);
+        background: linear-gradient(180deg, rgba(110, 168, 254, 0.22), rgba(110, 168, 254, 0.10));
+        color: var(--text);
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .btn:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+      }
+      .meta {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .error {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 0, 0, 0.25);
+        background: rgba(255, 0, 0, 0.08);
+        color: var(--text);
+        display: none;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 14px;
+        overflow: hidden;
+        border-radius: 12px;
+      }
+      th, td {
+        text-align: left;
+        padding: 10px 10px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: top;
+      }
+      th {
+        font-size: 12px;
+        color: var(--muted);
+        font-weight: 600;
+      }
+      tr:hover td {
+        background: rgba(110, 168, 254, 0.06);
+      }
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 12px;
+        color: var(--text);
+      }
+      .small {
+        color: var(--muted);
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div>
+          <h1>Kilo Gateway — Pesquisa de Modelos</h1>
+          <p class="sub">Busca completa (texto) + filtros por modelo e marca/provedor</p>
+        </div>
+        <div class="pill" id="statusPill">Carregando…</div>
+      </header>
+
+      <div class="panel">
+        <div class="controls">
+          <div>
+            <label for="q">Pesquisa (nome, id, qualquer campo)</label>
+            <input id="q" type="text" placeholder="Ex.: gpt, llama, vision, 32k…" />
+          </div>
+          <div>
+            <label for="modelSel">Modelo</label>
+            <select id="modelSel">
+              <option value="">Todos</option>
+            </select>
+          </div>
+          <div>
+            <label for="brandSel">Marca/Provedor</label>
+            <select id="brandSel">
+              <option value="">Todos</option>
+            </select>
+          </div>
+          <div>
+            <button class="btn" id="searchBtn">Pesquisar</button>
+          </div>
+        </div>
+
+        <div class="meta">
+          <div>
+            <span id="resultCount">0</span> resultado(s)
+            <span class="small">· limite: <span id="limitVal">200</span></span>
+          </div>
+          <div class="small">
+            Dica: defina <code>KILO_API_KEY</code> no servidor se o endpoint exigir autenticação.
+          </div>
+        </div>
+
+        <div class="error" id="errorBox"></div>
+
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 26%">Nome</th>
+              <th style="width: 22%">ID</th>
+              <th style="width: 20%">Modelo</th>
+              <th style="width: 18%">Marca</th>
+              <th>Raw</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      const statusPill = document.getElementById("statusPill");
+      const modelSel = document.getElementById("modelSel");
+      const brandSel = document.getElementById("brandSel");
+      const qInput = document.getElementById("q");
+      const searchBtn = document.getElementById("searchBtn");
+      const resultCount = document.getElementById("resultCount");
+      const tbody = document.getElementById("tbody");
+      const errorBox = document.getElementById("errorBox");
+
+      const LIMIT = 200;
+      document.getElementById("limitVal").textContent = String(LIMIT);
+
+      function setError(msg) {
+        if (!msg) {
+          errorBox.style.display = "none";
+          errorBox.textContent = "";
+          return;
+        }
+        errorBox.style.display = "block";
+        errorBox.textContent = msg;
+      }
+
+      function escapeHtml(s) {
+        return (s ?? "").toString()
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function fillSelect(selectEl, values) {
+        const current = selectEl.value;
+        const keep = new Set([""]);
+        const opts = [`<option value="">Todos</option>`];
+        for (const v of values) {
+          if (!v) continue;
+          if (keep.has(v)) continue;
+          keep.add(v);
+          opts.push(`<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`);
+        }
+        selectEl.innerHTML = opts.join("");
+        selectEl.value = keep.has(current) ? current : "";
+      }
+
+      function renderRows(items) {
+        const rows = items.map(it => {
+          const raw = JSON.stringify(it.raw ?? it, null, 0);
+          return `
+            <tr>
+              <td>${escapeHtml(it.name)}</td>
+              <td><code>${escapeHtml(it.id)}</code></td>
+              <td>${escapeHtml(it.model)}</td>
+              <td>${escapeHtml(it.brand)}</td>
+              <td class="small"><code>${escapeHtml(raw)}</code></td>
+            </tr>
+          `;
+        });
+        tbody.innerHTML = rows.join("");
+      }
+
+      async function loadFilters() {
+        statusPill.textContent = "Carregando filtros…";
+        setError(null);
+        const resp = await fetch("/api/models");
+        const data = await resp.json();
+        if (!resp.ok) throw new Error(data?.error ?? `Falha ao carregar /api/models (${resp.status})`);
+        fillSelect(modelSel, data.models ?? []);
+        fillSelect(brandSel, data.brands ?? []);
+        statusPill.textContent = `OK · ${data.count ?? 0} itens`;
+      }
+
+      async function search() {
+        searchBtn.disabled = true;
+        statusPill.textContent = "Pesquisando…";
+        setError(null);
+        const params = new URLSearchParams();
+        const q = qInput.value.trim();
+        const model = modelSel.value.trim();
+        const brand = brandSel.value.trim();
+        if (q) params.set("q", q);
+        if (model) params.set("model", model);
+        if (brand) params.set("brand", brand);
+        params.set("limit", String(LIMIT));
+
+        const resp = await fetch(`/api/search?${params.toString()}`);
+        const data = await resp.json();
+        if (!resp.ok) throw new Error(data?.error ?? `Falha ao buscar (${resp.status})`);
+
+        resultCount.textContent = String(data.count ?? 0);
+        renderRows(data.items ?? []);
+        statusPill.textContent = "Pronto";
+        searchBtn.disabled = false;
+      }
+
+      function debounce(fn, ms) {
+        let t = null;
+        return (...args) => {
+          if (t) clearTimeout(t);
+          t = setTimeout(() => fn(...args), ms);
+        };
+      }
+
+      const debouncedSearch = debounce(search, 350);
+
+      searchBtn.addEventListener("click", () => search().catch(e => setError(String(e))));
+      qInput.addEventListener("input", () => debouncedSearch().catch(e => setError(String(e))));
+      modelSel.addEventListener("change", () => search().catch(e => setError(String(e))));
+      brandSel.addEventListener("change", () => search().catch(e => setError(String(e))));
+
+      (async () => {
+        try {
+          await loadFilters();
+          await search();
+        } catch (e) {
+          statusPill.textContent = "Erro";
+          setError(String(e));
+        } finally {
+          searchBtn.disabled = false;
+        }
+      })();
+    </script>
+  </body>
+</html>
+
